@@ -1,0 +1,11 @@
+package com.DIMechanism.Example.InheritanceExample;
+
+import com.DIMechanism.Annotations.Component;
+
+@Component
+public class CardPaymentService implements PaymentService{
+    @Override
+    public void pay() {
+        System.out.println("pay with credit card");
+    }
+}
