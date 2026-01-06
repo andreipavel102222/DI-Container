@@ -1,4 +1,4 @@
-package com.DIMechanism.Example.InheritanceExample;
+package com.test.Example.InheritanceExample;
 
 public interface PaymentService {
     void pay();

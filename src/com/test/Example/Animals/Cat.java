@@ -1,4 +1,4 @@
-package com.DIMechanism.Example.Animals;
+package com.test.Example.Animals;
 
 
 public class Cat {

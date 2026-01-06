@@ -1,4 +1,4 @@
-package com.DIMechanism.Example;
+package com.test.Example;
 
 public class Circle {
     public int radius;

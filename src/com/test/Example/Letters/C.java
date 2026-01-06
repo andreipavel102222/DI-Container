@@ -1,4 +1,4 @@
-package com.DIMechanism.Example.Letters;
+package com.test.Example.Letters;
 
 import com.DIMechanism.Annotations.Component;
 

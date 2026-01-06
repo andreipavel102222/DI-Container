@@ -1,4 +1,4 @@
-package com.DIMechanism;
+package com.test;
 
 import com.DIMechanism.Annotations.Configuration;
 

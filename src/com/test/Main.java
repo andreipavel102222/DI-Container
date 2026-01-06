@@ -1,14 +1,8 @@
-package com.DIMechanism;
+package com.test;
 
 import com.DIMechanism.DIContainer.Container;
-import com.DIMechanism.Example.Animals.Cat;
-import com.DIMechanism.Example.InheritanceExample.CardPaymentService;
-import com.DIMechanism.Example.InheritanceExample.PaymentClient;
-import com.DIMechanism.Example.InheritanceExample.PaymentService;
-import com.DIMechanism.Example.Letters.A;
-import com.DIMechanism.Example.Letters.B;
-import com.DIMechanism.Example.Letters.C;
-import com.DIMechanism.Example.Square;
+import com.test.Example.InheritanceExample.PaymentClient;
+import com.test.Example.Letters.C;
 
 
 public class Main {

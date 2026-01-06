@@ -1,7 +1,4 @@
-package com.DIMechanism.Example;
-
-import com.DIMechanism.Annotations.Autowired;
-import com.DIMechanism.Annotations.Component;
+package com.test.Example;
 
 
 public class Square {
