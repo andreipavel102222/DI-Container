@@ -40,8 +40,7 @@ public class Container {
             ComponentMetadata componentMetadata = entry.getValue();
 
             if(!components.containsKey(componentName)){
-                Object instance = createComponent(componentMetadata);
-                components.put(componentName, instance);
+                getComponentInternal(componentName, componentMetadata);
             }
         }
     }
@@ -57,7 +56,10 @@ public class Container {
             return components.get(componentName);
         }
 
-        return createComponent(componentMetadata);
+        Object instance = createComponent(componentMetadata);
+        components.put(componentName, instance);
+
+        return instance;
     }
 
     private Object createComponent(ComponentMetadata componentMetadata) {
@@ -75,9 +77,7 @@ public class Container {
             String dependencyName = resolveComponentsName(parameter.getType(), qualifier);
             if(!components.containsKey(dependencyName)){
                 ComponentMetadata dependencyComponentMetadata = componentsMetadata.get(dependencyName);
-                Object dependency = createComponent(dependencyComponentMetadata);
-
-                components.put(dependencyName, dependency);
+                Object dependency = getComponentInternal(dependencyName, dependencyComponentMetadata);
                 args[i] = dependency;
             }
             else {
