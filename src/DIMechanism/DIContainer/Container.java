@@ -38,10 +38,7 @@ public class Container {
         for(Map.Entry<String, ComponentMetadata> entry: componentsMetadata.entrySet()){
             String componentName = entry.getKey();
             ComponentMetadata componentMetadata = entry.getValue();
-
-            if(!components.containsKey(componentName)){
-                getComponentInternal(componentName, componentMetadata);
-            }
+            getComponentInternal(componentName, componentMetadata);
         }
     }
 
