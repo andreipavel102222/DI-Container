@@ -4,7 +4,7 @@ import DIMechanism.Annotations.Component;
 
 @Component
 public class C {
-    private B b;
+    private final B b;
 
     public C(B b){
         this.b = b;

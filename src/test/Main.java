@@ -11,6 +11,8 @@ public class Main {
 
         System.out.println(container.getComponents());
         System.out.println(container.getComponentsMetadata());
+        System.out.println(container.getComponentsInCreation());
+
         PaymentClient paymentClient = container.getComponent(PaymentClient.class);
         paymentClient.payCheck();
 

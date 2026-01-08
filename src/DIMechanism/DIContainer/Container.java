@@ -37,20 +37,23 @@ public class Container {
     private void buildComponents() {
         for(Map.Entry<String, ComponentMetadata> entry: componentsMetadata.entrySet()){
             String componentName = entry.getKey();
-            ComponentMetadata componentMetadata = entry.getValue();
-            getComponentInternal(componentName, componentMetadata);
+            getComponentInternal(componentName);
         }
     }
 
     public <T> T getComponent(Class<T> classType) {
         String componentName = resolveComponentsName(classType, "");
-        ComponentMetadata componentMetadata = componentsMetadata.get(componentName);
-        return classType.cast(getComponentInternal(componentName, componentMetadata));
+        return classType.cast(getComponentInternal(componentName));
     }
 
-    private Object getComponentInternal(String componentName, ComponentMetadata componentMetadata){
+    private Object getComponentInternal(String componentName){
         if(components.containsKey(componentName)){
             return components.get(componentName);
+        }
+
+        ComponentMetadata componentMetadata = componentsMetadata.get(componentName);
+        if(componentMetadata == null) {
+            throw new RuntimeException("No component metadata for " + componentName);
         }
 
         Object instance = createComponent(componentMetadata);
@@ -63,23 +66,18 @@ public class Container {
         Constructor<?> constructor = componentMetadata.getConstructor();
         Parameter[] parameters = constructor.getParameters();
         Object[] args = new Object[parameters.length];
+
         if(componentsInCreation.contains(componentMetadata.getClassName())){
-            throw new RuntimeException("Circular dependecies in component " + componentMetadata.getClassName());
+            throw new RuntimeException("Circular dependencies in component " + componentMetadata.getClassName());
         }
+
         componentsInCreation.add(componentMetadata.getClassName());
 
         for(int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
             String qualifier = resolveQualifier(parameter);
             String dependencyName = resolveComponentsName(parameter.getType(), qualifier);
-            if(!components.containsKey(dependencyName)){
-                ComponentMetadata dependencyComponentMetadata = componentsMetadata.get(dependencyName);
-                Object dependency = getComponentInternal(dependencyName, dependencyComponentMetadata);
-                args[i] = dependency;
-            }
-            else {
-                args[i] = components.get(dependencyName);
-            }
+            args[i] = getComponentInternal(dependencyName);
         }
 
         componentsInCreation.remove(componentMetadata.getClassName());
@@ -136,11 +134,11 @@ public class Container {
          }
     }
 
-    public Map<String, Object> getComponents() {
-        return this.components;
-    }
+    public Map<String, Object> getComponents() { return this.components; }
 
     public Map<String, ComponentMetadata> getComponentsMetadata(){
         return this.componentsMetadata;
     }
+
+    public Set<String> getComponentsInCreation() {return this.componentsInCreation; }
 }
