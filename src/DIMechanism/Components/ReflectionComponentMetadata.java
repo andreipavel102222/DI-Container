@@ -12,7 +12,7 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
     }
 
     @Override
-    public String getClassName() {
+    public String getComponentName() {
         return componentClass.getName();
     }
 
@@ -36,13 +36,13 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
         for(Constructor<?> constructor: constructors) {
             if(constructor.isAnnotationPresent(Autowired.class)){
                 if(autowiredConstructor != null) {
-                    throw new RuntimeException("Class " + getClassName() + " has multiple autowired constructors");
+                    throw new RuntimeException("Class " + getComponentName() + " has multiple autowired constructors");
                 }
                 autowiredConstructor = constructor;
             }
         }
         if(autowiredConstructor == null) {
-            throw new RuntimeException("Class " + getClassName() + " has no autowired constructor");
+            throw new RuntimeException("Class " + getComponentName() + " has no autowired constructor");
         }
         return autowiredConstructor;
     }

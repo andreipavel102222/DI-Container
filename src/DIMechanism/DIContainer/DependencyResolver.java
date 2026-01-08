@@ -45,7 +45,7 @@ public class DependencyResolver {
 
         List<String> components = componentsMetadata.values().stream()
                 .filter(componentMetadata -> type.isAssignableFrom(componentMetadata.getClazz()))
-                .map(ComponentMetadata::getClassName)
+                .map(ComponentMetadata::getComponentName)
                 .toList();
 
         if(components.isEmpty()){

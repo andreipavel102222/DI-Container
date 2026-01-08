@@ -31,7 +31,7 @@ public class Container {
     private void scanComponents(){
         List<ComponentMetadata> componentsList = scanner.scan(packageName);
         for(ComponentMetadata component: componentsList) {
-            componentsMetadata.put(component.getClassName(), component);
+            componentsMetadata.put(component.getComponentName(), component);
         }
     }
 
@@ -68,11 +68,11 @@ public class Container {
         Parameter[] parameters = constructor.getParameters();
         Object[] args = new Object[parameters.length];
 
-        if(componentsInCreation.contains(componentMetadata.getClassName())){
-            throw new RuntimeException("Circular dependencies in component " + componentMetadata.getClassName());
+        if(componentsInCreation.contains(componentMetadata.getComponentName())){
+            throw new RuntimeException("Circular dependencies in component " + componentMetadata.getComponentName());
         }
 
-        componentsInCreation.add(componentMetadata.getClassName());
+        componentsInCreation.add(componentMetadata.getComponentName());
 
         for(int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
@@ -80,7 +80,7 @@ public class Container {
             args[i] = getComponentInternal(dependencyName);
         }
 
-        componentsInCreation.remove(componentMetadata.getClassName());
+        componentsInCreation.remove(componentMetadata.getComponentName());
 
         try {
             return constructor.newInstance(args);
