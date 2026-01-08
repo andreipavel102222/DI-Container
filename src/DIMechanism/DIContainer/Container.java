@@ -16,6 +16,7 @@ public class Container {
     private final Map<String, ComponentMetadata> componentsMetadata = new HashMap<>();
     private final Map<String, Object> components = new HashMap<>();
     private final Set<String> componentsInCreation = new HashSet<>();
+    private final DependencyResolver dependencyResolver = new DependencyResolver(componentsMetadata);
     private final Class<?> configClass;
     private String packageName;
 
@@ -42,7 +43,7 @@ public class Container {
     }
 
     public <T> T getComponent(Class<T> classType) {
-        String componentName = resolveComponentsName(classType, "");
+        String componentName = dependencyResolver.resolve(classType);
         return classType.cast(getComponentInternal(componentName));
     }
 
@@ -75,8 +76,7 @@ public class Container {
 
         for(int i = 0; i < parameters.length; i++) {
             Parameter parameter = parameters[i];
-            String qualifier = resolveQualifier(parameter);
-            String dependencyName = resolveComponentsName(parameter.getType(), qualifier);
+            String dependencyName = dependencyResolver.resolve(parameter);
             args[i] = getComponentInternal(dependencyName);
         }
 
@@ -87,42 +87,6 @@ public class Container {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String resolveQualifier(Parameter parameter) {
-        if(parameter.isAnnotationPresent(Qualifier.class)){
-            Qualifier qualifier = parameter.getAnnotation(Qualifier.class);
-            if(!componentsMetadata.containsKey(qualifier.value())){
-                throw new RuntimeException("No component found with qualifier " + qualifier);
-            }
-            return qualifier.value();
-        }
-        return "";
-    }
-
-    private String resolveComponentsName(Class<?> type, String qualifier){
-        if(!qualifier.isEmpty()){
-            return qualifier;
-        }
-
-        if(componentsMetadata.containsKey(type.getName())){
-            return type.getName();
-        }
-
-        List<String> components = componentsMetadata.values().stream()
-                .filter(componentMetadata -> type.isAssignableFrom(componentMetadata.getClazz()))
-                .map(ComponentMetadata::getClassName)
-                .toList();
-
-        if(components.isEmpty()){
-            throw new RuntimeException("No component was found for " + type.getName());
-        }
-
-        if(components.size() > 1) {
-            throw new RuntimeException("Multiple components for the type " + type.getName());
-        }
-
-        return components.get(0);
     }
 
     private void setPackageName(){
