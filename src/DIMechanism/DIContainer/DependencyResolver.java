@@ -52,10 +52,23 @@ public class DependencyResolver {
             throw new RuntimeException("No component was found for " + type.getName());
         }
 
-        if(components.size() > 1) {
-            throw new RuntimeException("Multiple components for the type " + type.getName());
+        if(components.size() == 1){
+            return components.get(0);
         }
 
-        return components.get(0);
+        List<String> primaryComponents = components.stream()
+                .filter(componentName -> componentsMetadata.get(componentName).isPrimary())
+                .toList();
+
+        if(primaryComponents.size() == 1) {
+            return primaryComponents.get(0);
+        }
+
+        if(primaryComponents.size() > 1) {
+            throw new RuntimeException("Multiple @Primary components found for the type " + type.getName());
+        }
+
+        throw new RuntimeException("Multiple components for the type " + type.getName() +
+                " and none marked as @Primary");
     }
 }

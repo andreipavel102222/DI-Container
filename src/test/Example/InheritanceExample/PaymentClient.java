@@ -7,7 +7,7 @@ import DIMechanism.Annotations.Qualifier;
 public class PaymentClient {
     private final PaymentService paymentService;
 
-    public PaymentClient(@Qualifier("test.Example.InheritanceExample.CashPaymentService") PaymentService paymentService){
+    public PaymentClient(PaymentService paymentService){
         this.paymentService = paymentService;
     }
 

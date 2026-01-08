@@ -7,4 +7,5 @@ public interface ComponentMetadata {
     Class<?> getClazz();
     String getScope();
     Constructor<?> getConstructor() throws RuntimeException;
+    boolean isPrimary();
 }

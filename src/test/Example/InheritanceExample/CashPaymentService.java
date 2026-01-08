@@ -1,7 +1,9 @@
 package test.Example.InheritanceExample;
 
 import DIMechanism.Annotations.Component;
+import DIMechanism.Annotations.Primary;
 
+@Primary
 @Component
 public class CashPaymentService implements PaymentService{
     @Override

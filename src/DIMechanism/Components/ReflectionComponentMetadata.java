@@ -1,6 +1,7 @@
 package DIMechanism.Components;
 
 import DIMechanism.Annotations.Autowired;
+import DIMechanism.Annotations.Primary;
 
 import java.lang.reflect.Constructor;
 
@@ -45,6 +46,11 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
             throw new RuntimeException("Class " + getComponentName() + " has no autowired constructor");
         }
         return autowiredConstructor;
+    }
+
+    @Override
+    public boolean isPrimary() {
+        return componentClass.isAnnotationPresent(Primary.class);
     }
 
 }
