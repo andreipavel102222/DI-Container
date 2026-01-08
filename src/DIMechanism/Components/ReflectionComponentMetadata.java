@@ -1,6 +1,7 @@
 package DIMechanism.Components;
 
 import DIMechanism.Annotations.Autowired;
+import DIMechanism.Annotations.Lazy;
 import DIMechanism.Annotations.Primary;
 
 import java.lang.reflect.Constructor;
@@ -51,6 +52,11 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
     @Override
     public boolean isPrimary() {
         return componentClass.isAnnotationPresent(Primary.class);
+    }
+
+    @Override
+    public boolean isLazy() {
+        return componentClass.isAnnotationPresent(Lazy.class);
     }
 
 }

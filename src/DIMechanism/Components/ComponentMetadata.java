@@ -8,4 +8,5 @@ public interface ComponentMetadata {
     String getScope();
     Constructor<?> getConstructor() throws RuntimeException;
     boolean isPrimary();
+    boolean isLazy();
 }
