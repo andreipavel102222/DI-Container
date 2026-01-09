@@ -2,7 +2,6 @@ package test.Example.Letters;
 
 import DIMechanism.Annotations.Component;
 
-@Component
 public class E {
     private final D d;
     public E(D d){

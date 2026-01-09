@@ -13,10 +13,7 @@ import java.util.*;
 
 public class Container {
     private final Scanner scanner = new ReflectionScanner();
-    private final Map<String, ComponentMetadata> componentsMetadata = new HashMap<>();
-    private final Map<String, Object> components = new HashMap<>();
-    private final Set<String> componentsInCreation = new HashSet<>();
-    private final DependencyResolver dependencyResolver = new DependencyResolver(componentsMetadata);
+    private final ComponentFactory componentFactory = new ComponentFactory();
     private final Class<?> configClass;
     private String packageName;
 
@@ -24,72 +21,23 @@ public class Container {
         this.configClass = configClass;
 
         setPackageName();
-        scanComponents();
-        buildComponents();
+
+        Map<String, ComponentMetadata> componentsMap = scanComponents();
+        componentFactory.addComponentsMetadata(componentsMap);
+        componentFactory.buildSingletonComponents();
     }
 
-    private void scanComponents(){
+    private Map<String, ComponentMetadata> scanComponents(){
         List<ComponentMetadata> componentsList = scanner.scan(packageName);
+        Map<String, ComponentMetadata> componentsMap = new HashMap<>();
         for(ComponentMetadata component: componentsList) {
-            componentsMetadata.put(component.getComponentName(), component);
+            componentsMap.put(component.getComponentName(), component);
         }
-    }
-
-    private void buildComponents() {
-        for(Map.Entry<String, ComponentMetadata> entry: componentsMetadata.entrySet()){
-            String componentName = entry.getKey();
-            ComponentMetadata componentMetadata = entry.getValue();
-            if(!componentMetadata.isLazy()) {
-                getComponentInternal(componentName);
-            }
-        }
+        return componentsMap;
     }
 
     public <T> T getComponent(Class<T> classType) {
-        String componentName = dependencyResolver.resolve(classType);
-        return classType.cast(getComponentInternal(componentName));
-    }
-
-    private Object getComponentInternal(String componentName){
-        if(components.containsKey(componentName)){
-            return components.get(componentName);
-        }
-
-        ComponentMetadata componentMetadata = componentsMetadata.get(componentName);
-        if(componentMetadata == null) {
-            throw new RuntimeException("No component metadata for " + componentName);
-        }
-
-        Object instance = createComponent(componentMetadata);
-        components.put(componentName, instance);
-
-        return instance;
-    }
-
-    private Object createComponent(ComponentMetadata componentMetadata) {
-        Constructor<?> constructor = componentMetadata.getConstructor();
-        Parameter[] parameters = constructor.getParameters();
-        Object[] args = new Object[parameters.length];
-
-        if(componentsInCreation.contains(componentMetadata.getComponentName())){
-            throw new RuntimeException("Circular dependencies in component " + componentMetadata.getComponentName());
-        }
-
-        componentsInCreation.add(componentMetadata.getComponentName());
-
-        for(int i = 0; i < parameters.length; i++) {
-            Parameter parameter = parameters[i];
-            String dependencyName = dependencyResolver.resolve(parameter);
-            args[i] = getComponentInternal(dependencyName);
-        }
-
-        componentsInCreation.remove(componentMetadata.getComponentName());
-
-        try {
-            return constructor.newInstance(args);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        return classType.cast(componentFactory.getComponentInternal(classType));
     }
 
     private void setPackageName(){
@@ -101,11 +49,9 @@ public class Container {
          }
     }
 
-    public Map<String, Object> getComponents() { return this.components; }
+    public Map<String, Object> getComponents() { return this.componentFactory.getComponents(); }
 
-    public Map<String, ComponentMetadata> getComponentsMetadata(){
-        return this.componentsMetadata;
-    }
+    public Map<String, ComponentMetadata> getComponentsMetadata() { return this.componentFactory.getComponentsMetadata(); }
 
-    public Set<String> getComponentsInCreation() {return this.componentsInCreation; }
+    public Set<String> getComponentsInCreation() { return this.componentFactory.getComponentsInCreation(); }
 }

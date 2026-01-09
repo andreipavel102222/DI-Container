@@ -7,19 +7,19 @@ import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
-public class DependencyResolver {
+class DependencyResolver {
     private final Map<String, ComponentMetadata> componentsMetadata;
 
-    public DependencyResolver (Map<String, ComponentMetadata> componentsMetadata){
+    DependencyResolver (Map<String, ComponentMetadata> componentsMetadata){
         this.componentsMetadata = componentsMetadata;
     }
 
-    public String resolve(Parameter parameter){
+    protected String resolve(Parameter parameter){
         String qualifier = resolveQualifier(parameter);
         return resolveComponentsName(parameter.getType(), qualifier);
     }
 
-    public String resolve(Class<?> classType){
+    protected String resolve(Class<?> classType){
         return resolveComponentsName(classType, "");
     }
 

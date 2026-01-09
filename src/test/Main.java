@@ -15,28 +15,28 @@ public class Main {
         System.out.println(container.getComponentsMetadata());
         System.out.println(container.getComponentsInCreation());
 
-//        PaymentClient paymentClient = container.getComponent(PaymentClient.class);
-//        paymentClient.payCheck();
+        PaymentClient paymentClient = container.getComponent(PaymentClient.class);
+        paymentClient.payCheck();
 
-//        C c = container.getComponent(C.class);
-//
-//        c.printC();
-//        c.printBFromC();
-//        c.printAFromC();
-//
-//        System.out.println(container.getComponents().size());
-//        System.out.println(container.getComponents().get("test.Example.Letters.D"));
-//
-//        D d = container.getComponent(D.class);
-//        d.printD();
-//
-//        System.out.println(container.getComponents().size());
-//        System.out.println(container.getComponents().get("test.Example.Letters.D"));
+        C c = container.getComponent(C.class);
 
-        E e = container.getComponent(E.class);
-        e.printE();
-        e.printDfromE();
+        c.printC();
+        c.printBFromC();
+        c.printAFromC();
+
         System.out.println(container.getComponents().size());
         System.out.println(container.getComponents().get("test.Example.Letters.D"));
+
+        D d = container.getComponent(D.class);
+        d.printD();
+
+        System.out.println(container.getComponents().size());
+        System.out.println(container.getComponents().get("test.Example.Letters.D"));
+
+//        E e = container.getComponent(E.class);
+//        e.printE();
+//        e.printDfromE();
+//        System.out.println(container.getComponents().size());
+//        System.out.println(container.getComponents().get("test.Example.Letters.D"));
     }
 }
