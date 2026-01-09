@@ -1,15 +1,12 @@
 package DIMechanism.DIContainer;
 
 import DIMechanism.Annotations.Configuration;
-import DIMechanism.Annotations.Qualifier;
 import DIMechanism.Components.ComponentMetadata;
-import DIMechanism.Scanner.*;
+import DIMechanism.Scanner.ReflectionScanner;
 import DIMechanism.Scanner.Scanner;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Parameter;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Container {
     private final ComponentFactory componentFactory = new ComponentFactory();
