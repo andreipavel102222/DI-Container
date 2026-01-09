@@ -21,7 +21,7 @@ class ComponentFactory {
         for(Map.Entry<String, ComponentMetadata> entry: componentsMetadata.entrySet()){
             String componentName = entry.getKey();
             ComponentMetadata componentMetadata = entry.getValue();
-            if(!componentMetadata.isLazy()) {
+            if(componentMetadata.getScope().equals("singleton") && !componentMetadata.isLazy()) {
                 getComponentInternal(componentName);
             }
         }
@@ -33,17 +33,20 @@ class ComponentFactory {
     }
 
     private Object getComponentInternal(String componentName){
-        if(components.containsKey(componentName)){
-            return components.get(componentName);
-        }
-
         ComponentMetadata componentMetadata = componentsMetadata.get(componentName);
         if(componentMetadata == null) {
             throw new RuntimeException("No component metadata for " + componentName);
         }
 
+        if(componentMetadata.getScope().equals("singleton") && components.containsKey(componentName)){
+            return components.get(componentName);
+        }
+
         Object instance = createComponent(componentMetadata);
-        components.put(componentName, instance);
+
+        if(componentMetadata.getScope().equals("singleton")){
+            components.put(componentName, instance);
+        }
 
         return instance;
     }

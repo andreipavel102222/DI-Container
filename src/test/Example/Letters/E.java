@@ -1,18 +1,12 @@
 package test.Example.Letters;
 
 import DIMechanism.Annotations.Component;
+import DIMechanism.Annotations.Scope;
 
+@Scope("prototype")
+@Component
 public class E {
-    private final D d;
-    public E(D d){
-        this.d = d;
-    }
-
     public void printE(){
         System.out.println("eeee");
-    }
-
-    public void printDfromE(){
-        d.printD();
     }
 }

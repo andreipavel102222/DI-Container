@@ -3,8 +3,10 @@ package DIMechanism.Components;
 import DIMechanism.Annotations.Autowired;
 import DIMechanism.Annotations.Lazy;
 import DIMechanism.Annotations.Primary;
+import DIMechanism.Annotations.Scope;
 
 import java.lang.reflect.Constructor;
+import java.util.Objects;
 
 public class ReflectionComponentMetadata implements ComponentMetadata {
     private final Class<?> componentClass;
@@ -25,6 +27,13 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
 
     @Override
     public String getScope() {
+        if(componentClass.isAnnotationPresent(Scope.class)){
+            Scope scope = componentClass.getAnnotation(Scope.class);
+            if(!scope.value().equals("singleton") && !scope.value().equals("prototype")){
+                throw new RuntimeException("Component " + getComponentName() + " has no valid scope");
+            }
+            return scope.value();
+        }
         return "singleton";
     }
 
@@ -38,13 +47,13 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
         for(Constructor<?> constructor: constructors) {
             if(constructor.isAnnotationPresent(Autowired.class)){
                 if(autowiredConstructor != null) {
-                    throw new RuntimeException("Class " + getComponentName() + " has multiple autowired constructors");
+                    throw new RuntimeException("Component " + getComponentName() + " has multiple autowired constructors");
                 }
                 autowiredConstructor = constructor;
             }
         }
         if(autowiredConstructor == null) {
-            throw new RuntimeException("Class " + getComponentName() + " has no autowired constructor");
+            throw new RuntimeException("Component " + getComponentName() + " has no autowired constructor");
         }
         return autowiredConstructor;
     }
