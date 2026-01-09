@@ -12,7 +12,6 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class Container {
-    private final Scanner scanner = new ReflectionScanner();
     private final ComponentFactory componentFactory = new ComponentFactory();
     private final Class<?> configClass;
     private String packageName;
@@ -22,18 +21,10 @@ public class Container {
 
         setPackageName();
 
-        Map<String, ComponentMetadata> componentsMap = scanComponents();
-        componentFactory.addComponentsMetadata(componentsMap);
-        componentFactory.buildSingletonComponents();
-    }
-
-    private Map<String, ComponentMetadata> scanComponents(){
+        Scanner scanner = new ReflectionScanner();
         List<ComponentMetadata> componentsList = scanner.scan(packageName);
-        Map<String, ComponentMetadata> componentsMap = new HashMap<>();
-        for(ComponentMetadata component: componentsList) {
-            componentsMap.put(component.getComponentName(), component);
-        }
-        return componentsMap;
+        componentFactory.addComponentsMetadata(componentsList);
+        componentFactory.buildSingletonComponents();
     }
 
     public <T> T getComponent(Class<T> classType) {

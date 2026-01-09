@@ -5,10 +5,7 @@ import DIMechanism.Components.ComponentMetadata;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 class ComponentFactory {
     private final Map<String, ComponentMetadata> componentsMetadata = new HashMap<>();
@@ -73,8 +70,10 @@ class ComponentFactory {
         }
     }
 
-    protected void addComponentsMetadata(Map<String, ComponentMetadata> scannedComponents){
-        componentsMetadata.putAll(scannedComponents);
+    protected void addComponentsMetadata(List<ComponentMetadata> scannedComponents){
+        for(ComponentMetadata component: scannedComponents) {
+            componentsMetadata.put(component.getComponentName(), component);
+        }
     }
 
     public Map<String, Object> getComponents() { return this.components; }
