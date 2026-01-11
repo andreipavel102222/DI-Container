@@ -1,12 +1,9 @@
 package DIMechanism.Components;
 
-import DIMechanism.Annotations.Autowired;
-import DIMechanism.Annotations.Lazy;
-import DIMechanism.Annotations.Primary;
-import DIMechanism.Annotations.Scope;
+import DIMechanism.Annotations.*;
 
 import java.lang.reflect.Constructor;
-import java.util.Objects;
+import java.lang.reflect.Method;
 
 public class ReflectionComponentMetadata implements ComponentMetadata {
     private final Class<?> componentClass;
@@ -66,6 +63,22 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
     @Override
     public boolean isLazy() {
         return componentClass.isAnnotationPresent(Lazy.class);
+    }
+
+    @Override
+    public Method getPostConstruct() {
+        Method postConstruct = null;
+
+        for(Method method : componentClass.getMethods()){
+            if(method.isAnnotationPresent(PostConstruct.class)) {
+                if(postConstruct != null) {
+                    throw new RuntimeException(getComponentName() + " has multiple @PostConstruct methods");
+                }
+                postConstruct = method;
+            }
+        }
+
+        return postConstruct;
     }
 
 }

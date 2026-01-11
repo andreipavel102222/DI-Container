@@ -1,6 +1,7 @@
 package DIMechanism.Components;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 public interface ComponentMetadata {
     String getComponentName();
@@ -9,4 +10,5 @@ public interface ComponentMetadata {
     Constructor<?> getConstructor() throws RuntimeException;
     boolean isPrimary();
     boolean isLazy();
+    Method getPostConstruct();
 }

@@ -4,6 +4,7 @@ import DIMechanism.Components.ComponentMetadata;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ class ComponentFactory {
         }
 
         Object instance = createComponent(componentMetadata);
+        callPostConstructMethod(componentMetadata, instance);
 
         if(componentMetadata.getScope().equals("singleton")){
             components.put(componentName, instance);
@@ -74,6 +76,17 @@ class ComponentFactory {
             return constructor.newInstance(args);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void callPostConstructMethod(ComponentMetadata componentMetadata, Object instance) {
+        Method postConstruct = componentMetadata.getPostConstruct();
+        try {
+            if(postConstruct != null) {
+                postConstruct.invoke(instance);
+            }
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Error when invoking post construct for " + componentMetadata.getComponentName());
         }
     }
 
