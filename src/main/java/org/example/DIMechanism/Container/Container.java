@@ -45,10 +45,4 @@ public class Container {
              throw new RuntimeException("No class with Configuration annotation was found");
          }
     }
-
-    public Map<String, Object> getComponents() { return this.componentFactory.getComponents(); }
-
-    public Map<String, ComponentMetadata> getComponentsMetadata() { return this.componentFactory.getComponentsMetadata(); }
-
-    public Set<String> getComponentsInCreation() { return this.componentFactory.getComponentsInCreation(); }
 }

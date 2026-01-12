@@ -120,12 +120,4 @@ class ComponentFactory {
             }
         }
     }
-
-    public Map<String, Object> getComponents() { return this.components; }
-
-    public Map<String, ComponentMetadata> getComponentsMetadata(){
-        return this.componentsMetadata;
-    }
-
-    public Set<String> getComponentsInCreation() {return this.componentsInCreation; }
 }
