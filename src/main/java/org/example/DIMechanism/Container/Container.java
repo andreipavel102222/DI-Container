@@ -16,7 +16,7 @@ public class Container {
     public Container(Class<?> configClass){
         this.configClass = configClass;
 
-        String packageName = setPackageName();
+        String packageName = getPackageName();
         Scanner scanner = new ReflectionScanner();
         List<ComponentMetadata> componentsList = scanner.scan(packageName);
 
@@ -36,7 +36,7 @@ public class Container {
         isClosed = true;
     }
 
-    private String setPackageName(){
+    private String getPackageName(){
         if(configClass.isAnnotationPresent(Configuration.class)){
             return configClass.getPackageName();
         }
