@@ -11,16 +11,15 @@ import java.util.Set;
 public class Container {
     private final ComponentFactory componentFactory = new ComponentFactory();
     private final Class<?> configClass;
-    private String packageName;
     private boolean isClosed = false;
 
     public Container(Class<?> configClass){
         this.configClass = configClass;
 
-        setPackageName();
-
+        String packageName = setPackageName();
         Scanner scanner = new ReflectionScanner();
         List<ComponentMetadata> componentsList = scanner.scan(packageName);
+
         componentFactory.addComponentsMetadata(componentsList);
         componentFactory.buildSingletonComponents();
     }
@@ -37,12 +36,11 @@ public class Container {
         isClosed = true;
     }
 
-    private void setPackageName(){
+    private String setPackageName(){
         if(configClass.isAnnotationPresent(Configuration.class)){
-            this.packageName = configClass.getPackageName();
+            return configClass.getPackageName();
         }
-         else {
-             throw new RuntimeException("No class with Configuration annotation was found");
-         }
+
+        throw new RuntimeException("No class with Configuration annotation was found");
     }
 }
