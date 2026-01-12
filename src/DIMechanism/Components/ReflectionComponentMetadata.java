@@ -81,4 +81,20 @@ public class ReflectionComponentMetadata implements ComponentMetadata {
         return postConstruct;
     }
 
+    @Override
+    public Method getPreDestroy() {
+        Method preDestroy = null;
+
+        for(Method method : componentClass.getMethods()){
+            if(method.isAnnotationPresent(PreDestroy.class)) {
+                if(preDestroy != null) {
+                    throw new RuntimeException(getComponentName() + " has multiple @PreDestroy methods");
+                }
+                preDestroy = method;
+            }
+        }
+
+        return preDestroy;
+    }
+
 }

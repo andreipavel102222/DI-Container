@@ -11,4 +11,5 @@ public interface ComponentMetadata {
     boolean isPrimary();
     boolean isLazy();
     Method getPostConstruct();
+    Method getPreDestroy();
 }

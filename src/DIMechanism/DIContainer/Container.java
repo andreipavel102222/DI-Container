@@ -12,6 +12,7 @@ public class Container {
     private final ComponentFactory componentFactory = new ComponentFactory();
     private final Class<?> configClass;
     private String packageName;
+    private boolean isClosed = false;
 
     public Container(Class<?> configClass){
         this.configClass = configClass;
@@ -25,7 +26,15 @@ public class Container {
     }
 
     public <T> T getComponent(Class<T> classType) {
+        if(isClosed){
+            throw new RuntimeException("Container is closed");
+        }
         return classType.cast(componentFactory.getComponentInternal(classType));
+    }
+
+    public void close(){
+        componentFactory.close();
+        isClosed = true;
     }
 
     private void setPackageName(){

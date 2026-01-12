@@ -23,5 +23,6 @@ public class Main {
         System.out.println(f2.e == e);
         System.out.println(f.e == f2.e);
 
+        container.close();
     }
 }

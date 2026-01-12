@@ -3,6 +3,7 @@ package test.Example.Letters;
 import DIMechanism.Annotations.Component;
 import DIMechanism.Annotations.Lazy;
 import DIMechanism.Annotations.PostConstruct;
+import DIMechanism.Annotations.PreDestroy;
 
 @Lazy
 @Component
@@ -25,5 +26,10 @@ public class F {
     @PostConstruct
     public void postConstructMethod(){
         System.out.println("Obiectul F a fost creat");
+    }
+
+    @PreDestroy
+    public void preDestroyMethod() {
+        System.out.println("Objectul F se elimina");
     }
 }

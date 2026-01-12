@@ -28,6 +28,20 @@ class ComponentFactory {
         }
     }
 
+    protected void close(){
+        callPreDestroyMethods();
+
+        componentsMetadata.clear();
+        components.clear();
+        componentsInCreation.clear();
+    }
+
+    protected void addComponentsMetadata(List<ComponentMetadata> scannedComponents){
+        for(ComponentMetadata component: scannedComponents) {
+            componentsMetadata.put(component.getComponentName(), component);
+        }
+    }
+
     protected Object getComponentInternal(Class<?> classType){
         String componentName = dependencyResolver.resolve(classType);
         return getComponentInternal(componentName);
@@ -90,9 +104,20 @@ class ComponentFactory {
         }
     }
 
-    protected void addComponentsMetadata(List<ComponentMetadata> scannedComponents){
-        for(ComponentMetadata component: scannedComponents) {
-            componentsMetadata.put(component.getComponentName(), component);
+    private void callPreDestroyMethods(){
+        for(Map.Entry<String, Object> entry: components.entrySet()){
+            String componentName = entry.getKey();
+            Object instance = entry.getValue();
+            ComponentMetadata componentMetadata = componentsMetadata.get(componentName);
+            Method preDestroy = componentMetadata.getPreDestroy();
+
+            try {
+                if(preDestroy != null) {
+                    preDestroy.invoke(instance);
+                }
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException("Error when invoking pre destroy for " + componentName);
+            }
         }
     }
 
