@@ -8,6 +8,13 @@
     <artifactId>DI-Container</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>DI Container</name>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.6.2</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
@@ -19,6 +26,6 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
 
+    </build>
 </project>
