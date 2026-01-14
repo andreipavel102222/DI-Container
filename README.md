@@ -119,7 +119,7 @@ serviceA.getServiceB().getName(); // ServiceB
 ```
 
 
-### Interface inection ###
+### Interface injection ###
 
 ```java
 import org.example.DIMechanism.Annotations.Primary;
@@ -192,8 +192,7 @@ public class CacheManager {
 
 ## Future Improvements ##
 - **Thread-safe singleton creation**  
-    - Currently, singleton components are not protected against concurrent access.  
-  In a multithreaded environment, this could lead to multiple instances being created.
+    - Currently, singleton components are not protected against concurrent access. In a multithreaded environment, this could lead to multiple instances being created.
   A future version could introduce synchronization or double-checked locking to ensure
   safe lazy initialization of singleton components.
 
