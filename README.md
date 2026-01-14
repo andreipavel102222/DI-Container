@@ -104,7 +104,6 @@ public class ServiceB {
 }
 ```
 
-<br>
 
 ### Create a configuration class ###
 ```java
@@ -112,7 +111,6 @@ public class ServiceB {
 public class AppConfig { }
 ```
 
-<br>
 
 ### Start the container and retrieve components ###
 ```java
@@ -125,7 +123,6 @@ serviceA.getName();        // ServiceA
 serviceA.getServiceB().getName(); // ServiceB
 ```
 
-<br>
 
 ### Interface inection ###
 
@@ -167,7 +164,6 @@ public class CheckoutService {
 }
 ```
 
-<br>
 
 ### Lazy and prototype ###
 ```java
@@ -181,7 +177,6 @@ public class HeavyService { }
 public class RequestContext { }
 ```
 
-<br>
 
 ### Lifecycle ###
 ```java
@@ -199,3 +194,18 @@ public class CacheManager {
     }
 }
 ```
+
+<br>
+
+## Future Improvements ##
+- **Thread-safe singleton creation**  
+    - Currently, singleton components are not protected against concurrent access.  
+  In a multithreaded environment, this could lead to multiple instances being created.
+  A future version could introduce synchronization or double-checked locking to ensure
+  safe lazy initialization of singleton components.
+
+- **Configuration via JSON**  
+    - Allow defining components and dependencies without annotations, enabling externalized configuration.
+
+- **Setter / Field Injection**
+    - Support alternative injection strategies in addition to constructor injection.
