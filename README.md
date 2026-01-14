@@ -21,7 +21,6 @@ The container currently supports:
     - @PostConstruct
     - @PreDestroy
 
-<br>
 
 ## Design Principles
 
@@ -35,7 +34,6 @@ The container is built around a clean separation of responsibilities.
 | Dependency Resolver | Extracts constructor dependencies                                   |
 | Scanner             | Discovers component classes in the classpath                        |
 
-<br>
 
 ## How it works
 1. A ```Container``` is created with a configuration class.
@@ -48,7 +46,6 @@ The container is built around a clean separation of responsibilities.
     - ```@PostConstruct``` is called
 5. When ```container.close()``` is called all singleton components receive ```@PreDestroy```
 
-<br>
 
 ## Scopes
 
@@ -61,7 +58,6 @@ The container is built around a clean separation of responsibilities.
 Singletons are cached inside the ```ComponentFactory``` and prototype components are created on demand
 and never cached.
 
-<br>
 
 ## Lifecycle ##
 
@@ -71,7 +67,6 @@ The container supports standard lifecycle callbacks:
 
 Only singleton components participate in lifecycle management.
 
-<br>
 
 ## Usage ##
 
@@ -194,8 +189,6 @@ public class CacheManager {
     }
 }
 ```
-
-<br>
 
 ## Future Improvements ##
 - **Thread-safe singleton creation**  
