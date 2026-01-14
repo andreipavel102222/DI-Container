@@ -21,6 +21,8 @@ The container currently supports:
     - @PostConstruct
     - @PreDestroy
 
+<br>
+
 ## Design Principles
 
 The container is built around a clean separation of responsibilities.
@@ -33,6 +35,8 @@ The container is built around a clean separation of responsibilities.
 | Dependency Resolver | Extracts constructor dependencies                                   |
 | Scanner             | Discovers component classes in the classpath                        |
 
+<br>
+
 ## How it works
 1. A ```Container``` is created with a configuration class.
 2. The scanner scans the package of the config class for components.
@@ -43,6 +47,8 @@ The container is built around a clean separation of responsibilities.
     - Circular dependencies are detected
     - ```@PostConstruct``` is called
 5. When ```container.close()``` is called all singleton components receive ```@PreDestroy```
+
+<br>
 
 ## Scopes
 
@@ -55,6 +61,8 @@ The container is built around a clean separation of responsibilities.
 Singletons are cached inside the ```ComponentFactory``` and prototype components are created on demand
 and never cached.
 
+<br>
+
 ## Lifecycle ##
 
 The container supports standard lifecycle callbacks:
@@ -62,6 +70,8 @@ The container supports standard lifecycle callbacks:
 - ```@PreDestroy``` is executed when ```Container.close()``` is called.
 
 Only singleton components participate in lifecycle management.
+
+<br>
 
 ## Usage ##
 
@@ -94,11 +104,15 @@ public class ServiceB {
 }
 ```
 
+<br>
+
 ### Create a configuration class ###
 ```java
 @Configuration
 public class AppConfig { }
 ```
+
+<br>
 
 ### Start the container and retrieve components ###
 ```java
@@ -111,6 +125,8 @@ serviceA.getName();        // ServiceA
 serviceA.getServiceB().getName(); // ServiceB
 ```
 
+<br>
+
 ### Interface inection ###
 
 ```java
@@ -121,7 +137,6 @@ public interface PaymentService {
 }
 
 @Component
-@Primary
 public class PaymentService1 implements PaymentService {
     public String pay() {
         return "Payment service 1";
@@ -130,7 +145,7 @@ public class PaymentService1 implements PaymentService {
 
 @Component
 @Primary
-public class PaymentService1 implements PaymentService {
+public class PaymentService2 implements PaymentService {
     public String pay() {
         return "Payment service 2";
     }
@@ -152,6 +167,8 @@ public class CheckoutService {
 }
 ```
 
+<br>
+
 ### Lazy and prototype ###
 ```java
 @Component
@@ -163,6 +180,8 @@ public class HeavyService { }
 @Scope("prototype")
 public class RequestContext { }
 ```
+
+<br>
 
 ### Lifecycle ###
 ```java
