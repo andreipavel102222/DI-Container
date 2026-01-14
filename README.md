@@ -1,8 +1,8 @@
 # Java Dependency Injection Container
 
 A lightweight Dependency Injection container inspired by Spring, built from scratch
-using Java Reflection. This project was created to deeply understand how frameworks
-like Spring works internally.
+using Java Reflection. This project explores the internal mechanics of DI frameworks such as Spring,
+including component scanning, dependency resolution and lifecycle management.
 
 ## Features
 
@@ -102,6 +102,7 @@ public class ServiceB {
 
 ### Create a configuration class ###
 ```java
+// Defines the base package for component scanning.
 @Configuration
 public class AppConfig { }
 ```
@@ -189,6 +190,12 @@ public class CacheManager {
     }
 }
 ```
+```java
+Container container = new Container(AppConfig.class);
+// ...
+container.close(); // triggers @PreDestroy on singleton beans
+```
+
 
 ## Future Improvements ##
 - **Thread-safe singleton creation**  
